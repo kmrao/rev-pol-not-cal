@@ -10,13 +10,15 @@ public class RpnCalculator {
 
     public static double evaluate(String expression) {
         Deque<Double> stack = new ArrayDeque<>();
+        //Split the expression into Tokens by whitespaces
         for (String token : expression.trim().split("\\s+")) {
+            //Check the Token is operator or not. If operator then process the operator
             if (isOperator(token)) {
                 processOperator(stack, token);
-            } else if (token.equals("sqrt")) {
+            } else if (token.equals("sqrt")) {  //If token is sqrt then process sqrt
                 processSqrt(stack);
             } else {
-                processNumber(stack, token);
+                processNumber(stack, token); //Process the number
             }
         }
         if (stack.size() != 1) {
@@ -35,6 +37,12 @@ public class RpnCalculator {
         }
         double b = stack.pop();
         double a = stack.pop();
+        /**
+         *  if operator  equal to  + then return a+b
+         *  if operator  equal to  + then return a-b
+         *  if operator  equal to  * then return a*b
+         *  if operator  equal to  / then return a/b
+         */
         double result = switch (operator) {
             case "+" -> a + b;
             case "-" -> a - b;
@@ -45,6 +53,7 @@ public class RpnCalculator {
             }
             default -> throw new IllegalStateException("Unknown operator: " + operator);
         };
+        //Push the result to stack.
         stack.push(result);
     }
 
